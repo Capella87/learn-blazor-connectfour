@@ -1,3 +1,4 @@
+using ConnectFour;
 using ConnectFour.Components;
 using Microsoft.AspNetCore.HttpLogging;
 
@@ -10,6 +11,8 @@ builder.Services.AddHttpLogging(opts =>
    opts.LoggingFields = HttpLoggingFields.RequestProperties);
 builder.Logging.AddFilter("Microsoft.AspNetCore.HttpLogging", LogLevel.Debug);
 builder.Services.AddProblemDetails();
+
+builder.Services.AddSingleton<GameState>();
 
 var app = builder.Build();
 
