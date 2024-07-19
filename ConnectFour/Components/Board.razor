@@ -1,4 +1,6 @@
-﻿<h3>Board</h3>
+﻿@inject GameState State
+
+<h3>Board</h3>
 
 <HeadContent>
     <style>
@@ -11,6 +13,14 @@
     </style>
 </HeadContent>
 
+<nav>
+    @for (byte i = 0; i < 7; i++)
+    {
+        var col = i;
+        <span title="Click to play a piece" @onclick="() => PlayPiece(col)">🔽</span>
+    }
+</nav>
+
 <div>
     <div class="board">
         @for (var i = 0; i < 42; i++)
@@ -20,8 +30,25 @@
             </span>
         }
     </div>
+    @for (var i = 0; i < 42; i++)
+    {
+        <span class="@pieces[i]"></span>
+    }
 </div>
 
 @code {
+    private string[] pieces = new string[42];
 
+    private void PlayPiece(int col)
+    {
+        var player = State.PlayerTurn;
+        var turn = State.CurrentTurn;
+        var landingRow = State.PlayPiece(col);
+        pieces[turn] = $"player{player} col{col} drop{landingRow}";
+    }
+
+    protected override void OnInitialized()
+    {
+        State.ResetBoard();
+    }
 }
